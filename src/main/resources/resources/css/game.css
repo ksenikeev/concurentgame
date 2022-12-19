@@ -1,0 +1,7 @@
+body {
+    background-image: url(/game/resources/image/game.svg);
+}
+
+.field {
+    color: #111111bd; /* mediumblue;*/
+}
