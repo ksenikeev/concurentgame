@@ -1,6 +1,9 @@
 package ru.itis.vkr2023.concurentgame.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,7 +14,11 @@ import java.util.List;
     Очередной кон игры
  */
 @Entity
-@Getter@Setter
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class GameStage {
 
     @Id
