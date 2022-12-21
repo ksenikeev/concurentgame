@@ -6,13 +6,31 @@
     <title>Конкуренция-Администрирование</title>
 </head>
 <body>
+<h1>Игра "Конкуренция"</h1>
 
-    <h1>Игра "Конкуренция"</h1>
-
-
-    <div>
-        <button>Сформировать новую игру</button>
-    </div>
-
+<form action="/game/create" method="get">
+    <button>Сформировать новую и гру</button>
+</form>
+<h2>История игр:</h2>
+<table>
+    <tr>
+        <th>Начало</th>
+        <th>Конец</th>
+        <th>Статус</th>
+        <th></th>
+    </tr>
+    <#list games as game>
+        <tr>
+            <td>${game.startDate!} </td>
+            <td>${game.endDate!}</td>
+            <td>${game.gameStatus!}</td>
+            <td>
+                <form action="/game/${game.id}">
+                    <button>Перейти</button>
+                </form>
+            </td>
+        </tr>
+    </#list>
+</table>
 </body>
 </html>
