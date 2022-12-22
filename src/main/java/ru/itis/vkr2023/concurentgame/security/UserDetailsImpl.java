@@ -4,14 +4,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.itis.vkr2023.concurentgame.model.sequrity.User;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class UserDetailImpl implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private User user;
 
-    public UserDetailImpl(User user) {
+    public UserDetailsImpl(User user) {
         this.user = user;
     }
 

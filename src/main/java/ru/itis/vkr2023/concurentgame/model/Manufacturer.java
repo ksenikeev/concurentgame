@@ -1,15 +1,26 @@
 package ru.itis.vkr2023.concurentgame.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.itis.vkr2023.concurentgame.model.sequrity.User;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 /**
  * Производитель
  */
 @Entity
-@Getter@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Manufacturer {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "manufacturerGen")

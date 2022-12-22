@@ -7,11 +7,13 @@
 </head>
 <body>
 
-    <h1>Игра "Конкуренция"</h1>
+<h1>Игра "Конкуренция"</h1>
 
-    <div>
-        <button>Принять участие в игре</button>
-    </div>
+<form action="/game/join" method="post">
+    <label>Введите имя:</label>
+    <input type="text" name="name"/>
+    <button>Принять участие в игре</button>
+</form>
 
 
 </body>
