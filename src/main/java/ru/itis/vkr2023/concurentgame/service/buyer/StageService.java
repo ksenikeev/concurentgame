@@ -1,13 +1,19 @@
 package ru.itis.vkr2023.concurentgame.service.buyer;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itis.vkr2023.concurentgame.model.Buyer;
 import ru.itis.vkr2023.concurentgame.model.Game;
 import ru.itis.vkr2023.concurentgame.model.ManufacturerStatus;
+import ru.itis.vkr2023.concurentgame.repository.ManufacturerStatusRepository;
+
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class StageService {
+
+    private final ManufacturerStatusRepository repository;
 
     public void calculateStage(List<Buyer> buyers, List<ManufacturerStatus> manufacturerStatuses, Game game) {
         for (Buyer buyer : buyers) {
@@ -54,9 +60,9 @@ public class StageService {
             double summ = Math.min(advertisement,
                     manufacturerStatus.getProductCount() * manufacturerStatus.getPrice()
                             - manufacturerStatus.getIncome());
-            advertisement -= summ;
+            advertisement -= summ; // бюджет покупателя, связанный с предпочтением рекламы уменьшаем на сумму покупки
 
-            manufacturerStatus.setIncome( manufacturerStatus.getIncome() - summ);
+            manufacturerStatus.setIncome( manufacturerStatus.getIncome() + summ);
         }
 
         n = 0;
@@ -76,7 +82,7 @@ public class StageService {
                             - manufacturerStatus.getIncome());
             price -= summ;
 
-            manufacturerStatus.setIncome( manufacturerStatus.getIncome() - summ);
+            manufacturerStatus.setIncome( manufacturerStatus.getIncome() + summ);
         }
 
         n = 0;
@@ -96,9 +102,9 @@ public class StageService {
                             - manufacturerStatus.getIncome());
             assortment -= summ;
 
-            manufacturerStatus.setIncome( manufacturerStatus.getIncome() - summ);
+            manufacturerStatus.setIncome( manufacturerStatus.getIncome() + summ);
         }
-
-
     }
+
+
 }

@@ -7,7 +7,9 @@
 </head>
 <body>
 
-<form method="post" action="/game/${gameId}/manufacturer-status/${statusId}">
+<div>
+<#if showParam>
+<form method="post" action="/game/manufacturer-status/${statusId}">
     <label>Количество продукции</label><br>
     <input type="number" name="productCount"><br>
     <label>Цена единицы продукции</label><br>
@@ -18,6 +20,22 @@
     <input type="number" name="assortment"><br>
     <input type="submit" value="Отправить">
 </form>
+<#else>
+<h2>Ожидайте начала очередного кона игры</h2>
+</#if>
+
+
+<div>
+    <h3>Расчет себестоимости</h3>
+    <table>
+        <tr><td>[1 - 100)</td><td>базовая себестоимость * 0.95 </td></tr>
+        <tr><td>[100 - 500)</td><td>базовая себестоимость * 0.9 </td></tr>
+        <tr><td>[500 - 1000)</td><td>базовая себестоимость * 0.85</td></tr>
+        <tr><td>[1000 - 5000)</td><td>базовая себестоимость * 0.8</td></tr>
+        <tr><td>[5000 - )</td><td>базовая себестоимость * 0.75</td></tr>
+    </table>
+</div>
+
 
 </body>
 </html>

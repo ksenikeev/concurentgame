@@ -9,12 +9,20 @@
 
 <h1>Игра "Конкуренция"</h1>
 
-<form action="/game/join" method="post">
-    <label>Введите имя:</label>
-    <input type="text" name="name"/>
-    <button>Принять участие в игре</button>
-</form>
 
+<#if canJoin>
+<div >
+    <form action="/game/join" method="post">
+        <label>Введите имя:</label>
+        <input type="text" name="name"/>
+        <button>Принять участие в игре</button>
+    </form>
+</div>
+</#if>
+
+<#if inActiveGame>
+    Вы участник игры ${game.id}, <a href="/game/manufacturer/${manufacturerId}">перейти</a>
+</#if>
 
 </body>
 </html>

@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.itis.vkr2023.concurentgame.model.Game;
-import ru.itis.vkr2023.concurentgame.model.GameStage;
-import ru.itis.vkr2023.concurentgame.model.ManufacturerStatus;
+import ru.itis.vkr2023.concurentgame.model.*;
 import ru.itis.vkr2023.concurentgame.security.UserDetailsImpl;
 import ru.itis.vkr2023.concurentgame.service.GameService;
 import ru.itis.vkr2023.concurentgame.service.ManufacturerService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,10 +22,17 @@ public class ManufacturerController {
     private final ManufacturerService manufacturerService;
     private final GameService gameService;
 
-    @GetMapping("/{gameId}/manufacturer-status/{statusId}")
-    public String getEnterParametersPage(@PathVariable Long gameId, @PathVariable Long statusId, Model model) {
-        model.addAttribute("gameId", gameId);
-        model.addAttribute("statusId", statusId);
+    @GetMapping("/manufacturer/{manufacturerId}")
+    public String getEnterParametersPage( @PathVariable Long manufacturerId, Model model) {
+
+        Optional<Game> game = gameService.getCurrentGame();
+        if (game.isPresent() && game.get().getGameStatus().equals(GameStatus.stagestarted)) {
+            model.addAttribute("showParam", true);
+        } else {
+            model.addAttribute("showParam", false);
+        }
+        //model.addAttribute("gameId", gameId);
+        model.addAttribute("statusId", manufacturerId);
         return "enter_parameters";
     }
 
@@ -34,24 +40,34 @@ public class ManufacturerController {
     public String joinGame(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String name, Model model) {
         Optional<Game> currentGame = gameService.getCurrentGame();
         if (currentGame.isPresent()) {
-            var manufacturerStatus = manufacturerService.joinGame(userDetails, currentGame.get(), name);
-            return "redirect:/" + currentGame.get().getId() + "/manufacturer/" + manufacturerStatus.getId() + "/parameters";
+            var manufacturer = manufacturerService.joinGame(userDetails, currentGame.get(), name);
+            //return "redirect:/" + currentGame.get().getId() + "/manufacturer/" + manufacturerStatus.getId() + "/parameters";
+            return "redirect:/manufacturer/" + manufacturer.getId();
         } else {
             return "active_game_not_found";
         }
     }
 
-    @PostMapping("/{gameId}/manufacturer-status/{statusId}")
-    public String enterParameters(@PathVariable Long gameId,
-                                  @PathVariable Long statusId,
-                                  ManufacturerStatus manufacturerStatus,
-                                  Model model) {
-        Optional<GameStage> stage = gameService.getGameStageByGameId(gameId);
-        if (stage.isPresent()) {
-            manufacturerService.enterParameters(statusId, manufacturerStatus);
-            return "redirect:/" + gameId + "/manufacturer-status/" + statusId;
+    @PostMapping("/manufacturer-status/{manufacturerId}")
+    public String enterParameters( @PathVariable Long manufacturerId, ManufacturerStatus manufacturerStatus, Model model) {
+        Manufacturer manufacturer = manufacturerService.findById(manufacturerId);
+        if (manufacturer != null) {
+            Game game = manufacturer.getGame();
+            if (!game.getGameStatus().equals(GameStatus.stagestarted)) {
+                return "error?stage_not_starter";
+            }
+            List<GameStage> stages = gameService.getGameStageByGame(manufacturer.getGame());
+            if (!stages.isEmpty()) {
+                GameStage gameStage = stages.get(0);
+
+                manufacturerService.enterParameters(manufacturer, gameStage, manufacturerStatus);
+
+                return "redirect:/manufacturer/" + manufacturerId;
+            } else {
+                return "game_stage_not_started";
+            }
         } else {
-            return "game_stage_not_started";
+            return "error?manufacturer_not_found";
         }
     }
 }

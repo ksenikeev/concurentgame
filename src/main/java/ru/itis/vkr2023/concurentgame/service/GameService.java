@@ -2,11 +2,14 @@ package ru.itis.vkr2023.concurentgame.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.itis.vkr2023.concurentgame.model.Game;
-import ru.itis.vkr2023.concurentgame.model.GameStage;
-import ru.itis.vkr2023.concurentgame.model.GameStatus;
+import org.springframework.transaction.annotation.Transactional;
+import ru.itis.vkr2023.concurentgame.model.*;
+import ru.itis.vkr2023.concurentgame.model.sequrity.User;
+import ru.itis.vkr2023.concurentgame.repository.BuyerRepository;
 import ru.itis.vkr2023.concurentgame.repository.GameRepository;
 import ru.itis.vkr2023.concurentgame.repository.GameStageRepository;
+import ru.itis.vkr2023.concurentgame.repository.ManufacturerStatusRepository;
+import ru.itis.vkr2023.concurentgame.service.buyer.StageService;
 
 import java.util.Date;
 import java.util.List;
@@ -25,9 +28,20 @@ public class GameService {
     private final GameRepository gameRepository;
     private final GameStageRepository gameStageRepository;
 
+    private final ManufacturerStatusRepository manufacturerStatusRepository;
+    private final BuyerRepository buyerRepository;
+
     public List<Game> getAllGames() {
         return gameRepository.findAll();
     }
+
+    public Game findActiveUserGame(User user) {
+        List<Game> games = gameRepository.findGameByUserNotInGameStatus(user, gameover);
+
+        return !games.isEmpty() ? games.get(0) : null;
+    }
+
+
 
     public void createGame(Game game) {
         if (existActiveGame()) {
@@ -50,8 +64,8 @@ public class GameService {
         return gameRepository.getById(id);
     }
 
-    public Optional<GameStage> getGameStageByGameId(Long id) {
-        return gameStageRepository.findByGameId(id);
+    public List<GameStage> getGameStageByGame(Game game) {
+        return gameStageRepository.findByGameOrderByIdDesc(game);
     }
 
     public void startGameStage(Long id) {
@@ -71,6 +85,7 @@ public class GameService {
         stage.setManufacturerStatusList(manufacturerService.getManufactureStatusListByGameStageId(game.getId()));
     }
 
+    @Transactional
     public Game stopGameStage(Long id) {
         Game game = getGameById(id);
         game.setGameStatus(GameStatus.stageover);
@@ -80,6 +95,19 @@ public class GameService {
         stage.setEndDate(new Date());
         gameStageRepository.save(stage);
         //todo: вызов логики покупателя
+        StageService stageService = new StageService(manufacturerStatusRepository);
+
+
+
+        List<Buyer> buyers = buyerRepository.findAll();
+        List<ManufacturerStatus> manufacturerStatuses = manufacturerService.getManufactureStatusListByGameStageId(stage.getId());
+
+        stageService.calculateStage(buyers, manufacturerStatuses, game);
+
+        for (ManufacturerStatus ms : manufacturerStatuses) {
+            manufacturerStatusRepository.save(ms);
+        }
+
         return game;
     }
 
