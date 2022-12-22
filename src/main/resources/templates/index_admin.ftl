@@ -9,7 +9,7 @@
 <h1>Игра "Конкуренция"</h1>
 
 <form action="/game/create" method="get">
-    <button>Сформировать новую и гру</button>
+    <button>Сформировать новую игру</button>
 </form>
 <h2>История игр:</h2>
 <table>
