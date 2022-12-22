@@ -31,6 +31,18 @@ public class Game {
     private Date endDate;
 
     /**
+     * Расчет себестоимости
+     */
+    public Double calculateCostPrice(Double countProduct) {
+        if (countProduct < 10) return costPrice;
+        else if (countProduct < 100) return  costPrice * 0.95;
+        else if (countProduct < 500) return  costPrice * 0.9;
+        else if (countProduct < 1000) return  costPrice * 0.85;
+        else if (countProduct < 5000) return  costPrice * 0.8;
+        else return costPrice * 0.75;
+    }
+
+    /**
      * Стартовый капитал N каждого производителя
      */
     private Double startUpCapital;

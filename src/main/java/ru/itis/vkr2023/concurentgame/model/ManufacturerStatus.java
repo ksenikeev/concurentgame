@@ -5,12 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 /**
  * Состояние (параметры) производителя в очередном этапе
@@ -36,17 +31,17 @@ public class ManufacturerStatus {
     /**
      * Количество продукции, которое производитель будет выпускать в этом периоде
      */
-    private Float productCount;
+    private Double productCount;
 
     /**
      * Цена единицы продукции, выставляемая производителем
      */
-    private Float price;
+    private Double price;
 
     /**
      * Затраты на рекламу текущего кона
      */
-    private Float advertisement;
+    private Double advertisement;
 
     /**
      * Ассортимент (количество типов продукции)
@@ -56,7 +51,27 @@ public class ManufacturerStatus {
     /**
      * Доход (выручка)
      */
-    private Float income;
+    private Double income;
+
+    /**
+     * текущие затраты
+     */
+    @Transient
+    private transient Double expenses;
+
+    /**
+     * текущий остаток до получения выручки (используется для производства и рекламы)
+     */
+    @Transient
+    private transient Double balanse;
+
+    public double getExpenses() {
+        if (expenses != null) return expenses;
+        else {
+            return advertisement +
+                productCount * gameStage.getGame().calculateCostPrice(productCount / advertisement);
+        }
+    }
 
     public ManufacturerStatus setId(Long id) {
         this.id = id;
@@ -73,17 +88,17 @@ public class ManufacturerStatus {
         return this;
     }
 
-    public ManufacturerStatus setProductCount(Float productCount) {
+    public ManufacturerStatus setProductCount(Double productCount) {
         this.productCount = productCount;
         return this;
     }
 
-    public ManufacturerStatus setPrice(Float price) {
+    public ManufacturerStatus setPrice(Double price) {
         this.price = price;
         return this;
     }
 
-    public ManufacturerStatus setAdvertisement(Float advertisement) {
+    public ManufacturerStatus setAdvertisement(Double advertisement) {
         this.advertisement = advertisement;
         return this;
     }
@@ -93,7 +108,7 @@ public class ManufacturerStatus {
         return this;
     }
 
-    public ManufacturerStatus setIncome(Float income) {
+    public ManufacturerStatus setIncome(Double income) {
         this.income = income;
         return this;
     }
