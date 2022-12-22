@@ -24,7 +24,10 @@
 </tr>
 </table>
 <form action="/game/${game.id}/start">
-    <button>Запустить игру</button>
+    <button>Запустить этап</button>
+</form>
+<form action="/game/${game.id}/stop">
+    <button>Остановить этап</button>
 </form>
 <form action="/game/${game.id}/finish">
     <button>Завершить игру</button>
@@ -32,5 +35,21 @@
 <form action="/game">
     <button>Все игры</button>
 </form>
+<table>
+    <tr>
+        <th>Имя производителя</th>
+        <th></th>
+    </tr>
+    <#list manufacturers as manufacturer>
+        <tr>
+            <td>${manufacturer.getName()!} </td>
+            <td>
+                <form action="/game/${game.id}/manufacturer/${manufacturer.getId()}">
+                    <button>Перейти</button>
+                </form>
+            </td>
+        </tr>
+    </#list>
+</table>
 </body>
 </html>
