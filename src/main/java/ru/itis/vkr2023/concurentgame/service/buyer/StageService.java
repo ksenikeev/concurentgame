@@ -27,6 +27,7 @@ public class StageService {
         double budget = game.getBuyersBudget();
 
         // Расчитываем доли предпочтений на рекламу, цену, ассортимент
+        //относительные количественные показатели из анкет
         double advertisementIndex =
                 (buyer.getQuestion1() + buyer.getQuestion2() + buyer.getQuestion4() + buyer.getQuestion6()) * 0.05;
 
@@ -34,20 +35,24 @@ public class StageService {
 
         double assortmentIndex = buyer.getQuestion3() * 0.2;
 
+        // Бюджет покупок с предпочтением рекламируемых товаров
+        double advertisementBudget = (advertisementIndex / (advertisementIndex + priceIndex + assortmentIndex)) * budget;
 
-        double advertisement = (advertisementIndex / (advertisementIndex + priceIndex + assortmentIndex)) * budget;
+        // Бюджет покупок товаров у производителя с наименьшей ценой
+        double priceBudget = (priceIndex / (advertisementIndex + priceIndex + assortmentIndex)) * budget;
 
-        double price = (priceIndex / (advertisementIndex + priceIndex + assortmentIndex)) * budget;
+        // Бюджет покупок товаров у производителя с наибольшим разнообразием
+        double assortmentBudget = (assortmentIndex / (advertisementIndex + priceIndex + assortmentIndex)) * budget;
 
-        double assortment = (assortmentIndex / (advertisementIndex + priceIndex + assortmentIndex)) * budget;
 
         // перебираем текущие статусы производителей для совершения покупок в найденных пропорциях
         int countManufacturer = manufacturerStatuses.size();
-        ManufacturerStatus manufacturerStatus = manufacturerStatuses.get(0);
+        ManufacturerStatus manufacturerStatus = null;
 
         int n = 0;
-        while (advertisement > 0) {
+        while (advertisementBudget > 0 && n < countManufacturer) {
             // ищем производителя с максимальными затратами на рекламу
+            manufacturerStatus = manufacturerStatuses.get(countManufacturer-1);
             for (int i = n; i < countManufacturer ; ++i ) {
                 if (manufacturerStatuses.get(i).getAdvertisement() > manufacturerStatus.getAdvertisement()) {
                     manufacturerStatus = manufacturerStatuses.get(i);
@@ -57,17 +62,19 @@ public class StageService {
 
             // Берем от производителя сколько сможем (стоимость произведенной продукции минус то, что успели купить
             // раньше другие покупатели)
-            double summ = Math.min(advertisement,
+            double summ = Math.min(advertisementBudget,
                     manufacturerStatus.getProductCount() * manufacturerStatus.getPrice()
                             - manufacturerStatus.getIncome());
-            advertisement -= summ; // бюджет покупателя, связанный с предпочтением рекламы уменьшаем на сумму покупки
+            advertisementBudget -= summ; // бюджет покупателя, связанный с предпочтением рекламы уменьшаем на сумму покупки
 
             manufacturerStatus.setIncome( manufacturerStatus.getIncome() + summ);
         }
 
+
         n = 0;
-        while (price > 0) {
+        while (priceBudget > 0 && n < countManufacturer) {
             // ищем производителя с минимальной ценой
+            manufacturerStatus = manufacturerStatuses.get(countManufacturer-1);
             for (int i = n; i < countManufacturer ; ++i ) {
                 if (manufacturerStatuses.get(i).getPrice() < manufacturerStatus.getPrice()) {
                     manufacturerStatus = manufacturerStatuses.get(i);
@@ -77,17 +84,18 @@ public class StageService {
 
             // Берем от производителя сколько сможем (стоимость произведенной продукции минус то, что успели купить
             // раньше другие покупатели)
-            double summ = Math.min(price,
+            double summ = Math.min(priceBudget,
                     manufacturerStatus.getProductCount() * manufacturerStatus.getPrice()
                             - manufacturerStatus.getIncome());
-            price -= summ;
+            priceBudget -= summ;
 
             manufacturerStatus.setIncome( manufacturerStatus.getIncome() + summ);
         }
 
         n = 0;
-        while (assortment > 0) {
+        while (assortmentBudget > 0 && n < countManufacturer) {
             // ищем производителя с максимальным ассортиментом
+            manufacturerStatus = manufacturerStatuses.get(countManufacturer-1);
             for (int i = n; i < countManufacturer ; ++i ) {
                 if (manufacturerStatuses.get(i).getAssortment() > manufacturerStatus.getAssortment()) {
                     manufacturerStatus = manufacturerStatuses.get(i);
@@ -97,10 +105,10 @@ public class StageService {
 
             // Берем от производителя сколько сможем (стоимость произведенной продукции минус то, что успели купить
             // раньше другие покупатели)
-            double summ = Math.min(assortment,
+            double summ = Math.min(assortmentBudget,
                     manufacturerStatus.getProductCount() * manufacturerStatus.getPrice()
                             - manufacturerStatus.getIncome());
-            assortment -= summ;
+            assortmentBudget -= summ;
 
             manufacturerStatus.setIncome( manufacturerStatus.getIncome() + summ);
         }

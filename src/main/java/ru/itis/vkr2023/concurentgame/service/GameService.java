@@ -95,13 +95,12 @@ public class GameService {
         stage.setEndDate(new Date());
         gameStageRepository.save(stage);
         //todo: вызов логики покупателя
-        StageService stageService = new StageService(manufacturerStatusRepository);
-
 
 
         List<Buyer> buyers = buyerRepository.findAll();
         List<ManufacturerStatus> manufacturerStatuses = manufacturerService.getManufactureStatusListByGameStageId(stage.getId());
 
+        StageService stageService = new StageService(manufacturerStatusRepository);
         stageService.calculateStage(buyers, manufacturerStatuses, game);
 
         for (ManufacturerStatus ms : manufacturerStatuses) {
