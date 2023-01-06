@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.itis.vkr2023.concurentgame.model.sequrity.User;
+import ru.itis.vkr2023.concurentgame.model.security.User;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

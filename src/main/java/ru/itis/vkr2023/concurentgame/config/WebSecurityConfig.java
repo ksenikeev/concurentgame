@@ -42,14 +42,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin(/*withDefaults()*/)
                 .loginPage("/login")
-                //.loginProcessingUrl("/myuserlogin")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/")
                 .failureUrl("/login?error")
                 .permitAll();
-
-        //        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        http.formLogin().successHandler((request, response, authentication)
+                            -> response.sendRedirect(request.getContextPath()));
     }
-
 }

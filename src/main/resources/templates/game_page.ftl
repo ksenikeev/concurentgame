@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Конкуренция-Администрирование</title>
+    <link rel='stylesheet' href='/game/resources/css/game.css'>
 </head>
 <body>
 <table>
@@ -24,17 +25,21 @@
 </tr>
 </table>
 <form action="/game/${game.id}/start">
-    <button>Запустить этап</button>
+    <button <#if !canStart>disabled</#if>>Запустить этап</button>
 </form>
 <form action="/game/${game.id}/stop">
-    <button>Остановить этап</button>
+    <button <#if !canStop>disabled</#if>>Остановить этап</button>
 </form>
 <form action="/game/${game.id}/finish">
-    <button>Завершить игру</button>
+    <button <#if !canOver>disabled</#if>>Завершить игру</button>
 </form>
 <form action="/game">
     <button>Все игры</button>
 </form>
+
+<br>
+<button onclick="window.location.href='/game/manufacturer-status/info/admin/${game.id}';">Статистика</button>
+
 <table>
     <tr>
         <th>Имя производителя</th>
@@ -51,5 +56,9 @@
         </tr>
     </#list>
 </table>
+<br>
+<button class="logout" onclick="window.location.href='/game/logout';">Выход</button>
+
+
 </body>
 </html>

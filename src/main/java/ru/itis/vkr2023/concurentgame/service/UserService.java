@@ -3,7 +3,7 @@ package ru.itis.vkr2023.concurentgame.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itis.vkr2023.concurentgame.model.sequrity.User;
+import ru.itis.vkr2023.concurentgame.model.security.User;
 import ru.itis.vkr2023.concurentgame.repository.UserRepository;
 
 @Service

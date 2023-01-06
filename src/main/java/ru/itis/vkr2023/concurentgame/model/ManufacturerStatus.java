@@ -54,21 +54,15 @@ public class ManufacturerStatus {
     private Double income = 0d;
 
     /**
-     * текущие затраты
-     */
-    private Double expenses = 0d;
-
-    /**
      * текущий остаток до получения выручки (используется для производства и рекламы)
      */
     private Double balance = 0d;
 
-    public double getExpenses() {
-        if (expenses != null) return expenses;
-        else {
+    public double calculateExpenses() {
+        if (assortment != null)
             return advertisement +
-                productCount * gameStage.getGame().calculateCostPrice(productCount / advertisement);
-        }
+                productCount * gameStage.getGame().calculateCostPrice(productCount / assortment);
+        else return advertisement;
     }
 
     public ManufacturerStatus setId(Long id) {

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Конкуренция-Администрирование</title>
+    <link rel='stylesheet' href='/game/resources/css/game.css'>
 </head>
 <body>
 <h1>Игра "Конкуренция"</h1>
@@ -32,5 +33,8 @@
         </tr>
     </#list>
 </table>
+<br>
+<button class="logout" onclick="window.location.href='/game/logout';">Выход</button>
+
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.itis.vkr2023.concurentgame.model.Game;
+import ru.itis.vkr2023.concurentgame.model.GameStatus;
 import ru.itis.vkr2023.concurentgame.service.GameService;
 import ru.itis.vkr2023.concurentgame.service.ManufacturerService;
 
@@ -34,6 +35,12 @@ public class GameController {
     public String getGameById(@PathVariable Long id, Model model) {
         var game = gameService.getGameById(id);
         var manufacturers = manufacturerService.getManufacturersByGameId(id);
+
+        model.addAttribute("canStart", game.getGameStatus().equals(GameStatus.created)
+                    || game.getGameStatus().equals(GameStatus.stageover));
+        model.addAttribute("canStop", game.getGameStatus().equals(GameStatus.stagestarted));
+        model.addAttribute("canOver", game.getGameStatus().equals(GameStatus.stageover));
+
         model.addAttribute("game", game);
         model.addAttribute("manufacturers", manufacturers);
         return "game_page";
