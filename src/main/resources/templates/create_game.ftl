@@ -4,18 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Конкуренция-Администрирование</title>
+    <link rel='stylesheet' href='/game/resources/css/game.css'>
 </head>
 <body>
 
-<form method="post" action="/game/create">
-    <label>Стартовый капитал производителя</label><br>
-    <input type="number" name="startUpCapital"><br>
-    <label>Базовая себестомость</label><br>
-    <input type="number" name="costPrice"><br>
-    <label>Бюджет потребителя</label><br>
-    <input type="number" name="buyersBudget"><br>
-    <input type="submit" value="Сформировать новую игру">
-</form>
+<div class="mcnt">
+    <form  class="container" method="post" action="/game/create">
+        <label for = "sc">Стартовый капитал производителя</label>
+        <input id = "sc" type="number" name="startUpCapital">
+        <label for = "cp">Базовая себестомость</label>
+        <input id = "cp" type="number" name="costPrice">
+        <label for = "bp">Бюджет потребителя</label>
+        <input id = "bp" type="number" name="buyersBudget">
+        <input type="submit" value="Сформировать новую игру">
+    </form>
+    <br>
+    <button class="logout" onclick="window.location.href='/game/logout';">Выход</button>
 
+</div>
 </body>
 </html>

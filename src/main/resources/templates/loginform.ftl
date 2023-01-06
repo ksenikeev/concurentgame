@@ -10,13 +10,13 @@
 </head>
 <body>
 
-<h1>Игра "Конкуренция"</h1>
-
-<div>
-    <form action="/game/login" method="post" onsubmit="validate()">
-        <div><input class="field" name="username" placeholder="имя пользователя"/></div>
-        <div><input type="password" class="field" name="password" placeholder="пароль"/></div>
-        <div><input class="field" type="submit" value="Вход"/></div>
+<div class="mcnt">
+    <h2>Игра "Конкуренция"</h2>
+    <form class="container" action="/game/login" method="post" onsubmit="validate()">
+        <input class="field" name="username" placeholder="имя пользователя"/>
+        <input type="password" class="field" name="password" placeholder="пароль"/>
+        <br>
+        <input class="field" type="submit" value="Вход"/>
     </form>
 </div>
 

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Конкуренция-Администрирование</title>
+    <link rel='stylesheet' href='/game/resources/css/game.css'>
 </head>
 <body>
 

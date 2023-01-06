@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.itis.vkr2023.concurentgame.model.Game;
 import ru.itis.vkr2023.concurentgame.model.GameStatus;
-import ru.itis.vkr2023.concurentgame.model.sequrity.User;
+import ru.itis.vkr2023.concurentgame.model.security.User;
 
 import java.util.List;
 import java.util.Optional;

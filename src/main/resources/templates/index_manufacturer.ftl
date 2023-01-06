@@ -4,25 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Конкуренция</title>
+    <link rel='stylesheet' href='/game/resources/css/game.css'>
 </head>
 <body>
 
-<h1>Игра "Конкуренция"</h1>
 
+<div class="mcnt">
+    <h2>Игра "Конкуренция"</h2>
 
 <#if canJoin>
-<div >
-    <form action="/game/join" method="post">
+    <form class="container" action="/game/join" method="post">
         <label>Введите имя:</label>
         <input type="text" name="name"/>
         <button>Принять участие в игре</button>
     </form>
-</div>
 </#if>
 
 <#if inActiveGame>
-    Вы участник игры ${game.id}, <a href="/game/manufacturer/${manufacturerId}">перейти</a>
+    Вы участник игры ${game.id},
+    <button onclick="window.location.href='/game/manufacturer/${manufacturerId}';">перейти</button>
 </#if>
+
+<br>
+<button class="logout" onclick="window.location.href='/game/logout';">Выход</button>
+
+</div>
 
 </body>
 </html>
